@@ -7,6 +7,7 @@
 <body>
 <svg></svg>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<div class="tooltip"></div>
 
 <script>
 
@@ -28,29 +29,6 @@ var projection = d3.geoMercator()
 
 let geopath = d3.geoPath().projection(projection);
 
-let mouseOver = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .5)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("opacity", 1)
-      .style("stroke", "black")
-  }
-
-let mouseLeave = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .8)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("stroke", "white")
-  }
-
 svg.append("g")
     .attr("id", "districts")
     .selectAll("path")
@@ -68,8 +46,19 @@ svg.append("g")
     .style("stroke", "transparent")
       .attr("class", function(d){ return "Country" } )
       .style("opacity", .8)
-      .on("mouseover", mouseOver )
-      .on("mouseleave", mouseLeave )
+      .on("mouseover", (event, d) => {
+    d3.select(".tooltip")
+    .text(d.properties.name)
+    .style("position", "absolute")
+    .style("background", "#fff")
+    .style("left", (event.pageX) + "px")
+    .style("top", (event.pageY) + "px");
+})
+.on("mouseout", (event, d) => {
+    d3.select(".tooltip")
+    .text("test");
+})
+      
 })
 
 </script>
