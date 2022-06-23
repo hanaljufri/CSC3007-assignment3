@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <style></style>
+  <title>Population of Singapore</title>
 </head>
 <body>
+    <h1>Population of Singapore</h1>
     <svg id="my_dataviz" width="1000" height="600"></svg>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -38,6 +40,29 @@
     var projection = d3.geoMercator()
     .center([103.851959, 1.290270])
     .fitExtent([[20, 20], [980, 580]], topo);
+
+    let mouseOver = function(d) {
+    d3.selectAll(".Country")
+      .transition()
+      .duration(200)
+      .style("opacity", .5)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("opacity", 1)
+      .style("stroke", "black")
+  }
+
+  let mouseLeave = function(d) {
+    d3.selectAll(".Country")
+      .transition()
+      .duration(200)
+      .style("opacity", .8)
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style("stroke", "transparent")
+  }
     
     // Draw the map
     svg.append("g")
@@ -54,19 +79,12 @@
             d.total = data.get(d.properties.Name) || 0;
             return colorScale(d.total);
         })
-        .on("mouseover", (event, d) => {
-    d3.select(".tooltip")
-    .text(d.properties.name)
-    .style("position", "absolute")
-    .style("background", "#fff")
-    .style("left", (event.pageX) + "px")
-    .style("top", (event.pageY) + "px");
-})
-.on("mouseout", (event, d) => {
-    d3.select(".tooltip")
-    .text("");
-})
-        }
+        .style("stroke", "transparent")
+      .attr("class", function(d){ return "Country" } )
+      .style("opacity", .8)
+      .on("mouseover", mouseOver )
+      .on("mouseleave", mouseLeave )
+    }
 
 </script>
 
