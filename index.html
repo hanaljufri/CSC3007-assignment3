@@ -5,8 +5,9 @@
   <style></style>
 </head>
 <body>
-<svg></svg>
+    
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<svg></svg>
 <div class="tooltip"></div>
 
 <script>
@@ -16,50 +17,37 @@ let width = 1000, height = 600;
 let svg = d3.select("svg")
     .attr("viewBox", "0 0 " + width + " " + height)
 
-// Load external data
-Promise.all([d3.json("sgmap.json"), d3.csv("population2021.csv")]).then(data => {
+    // Load external data and boot
+    d3.queue()
+    .defer(d3.json, "sgmap.json")
+    .defer(d3.csv, "population2021.csv", function(d) { data.set((d.Subzone).toUpperCase(), +d.Population); })
+    .await(ready);
+    
 
-console.log(data[0]);
-console.log(data[1]);
+    function ready(error, topo) {
 
-// Map and projection
-var projection = d3.geoMercator()
+    // Map and projection
+    var path = d3.geoPath();
+    var projection = d3.geoMercator()
     .center([103.851959, 1.290270])
-    .fitExtent([[20, 20], [980, 580]], data[0]);
-
-let geopath = d3.geoPath().projection(projection);
-
-svg.append("g")
-    .attr("id", "districts")
-    .selectAll("path")
-    .data(data[0].features)
-    .enter()
-    .append("path")
-    .attr("d", geopath)
-    .attr("fill", "yellow")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 0.5)
-    .attr("fill", function (d) {
-        d.total = data.get(d.id) || 0;
-        return colorScale(d.total);
-      })
-    .style("stroke", "transparent")
-      .attr("class", function(d){ return "Country" } )
-      .style("opacity", .8)
-      .on("mouseover", (event, d) => {
-    d3.select(".tooltip")
-    .text(d.properties.name)
-    .style("position", "absolute")
-    .style("background", "#fff")
-    .style("left", (event.pageX) + "px")
-    .style("top", (event.pageY) + "px");
-})
-.on("mouseout", (event, d) => {
-    d3.select(".tooltip")
-    .text("test");
-})
-      
-})
+    .fitExtent([[20, 20], [980, 580]], topo);
+    
+    // Draw the map
+    svg.append("g")
+        .selectAll("path")
+        .data(topo.features)
+        .enter()
+        .append("path")
+        // draw each country
+        .attr("d", d3.geoPath()
+            .projection(projection)
+        )
+        // set the color of each country
+        .attr("fill", function (d) {
+            d.total = data.get(d.properties.Field_1) || 0;
+            return colorScale(d.total);
+        })
+        }
 
 </script>
 
