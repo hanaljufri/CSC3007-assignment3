@@ -35,10 +35,16 @@ svg.append("g")
     .enter()
     .append("path")
     .attr("d", geopath)
-    .attr("fill", "green")
+    .attr("fill", "black")
     .attr("stroke", "#fff")
     .attr("stroke-width", 0.5)
     .style("stroke", "transparent")
+      // set the color of each country
+      .attr("fill", function (d) {
+        d.total = data.get(d.id) || 0;
+        return colorScale(d.total);
+      })
+      .style("stroke", "transparent")
       .attr("class", function(d){ return "Country" } )
       .style("opacity", .8)
       .on("mouseover", mouseOver )
@@ -66,7 +72,7 @@ let mouseLeave = function(d) {
     d3.select(this)
       .transition()
       .duration(200)
-      .style("stroke", "transparent")
+      .style("stroke", "white")
   }
 
 </script>
