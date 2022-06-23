@@ -27,7 +27,7 @@
     // Load external data and boot
     d3.queue()
     .defer(d3.json, "sgmap.json")
-    .defer(d3.csv, "population2021.csv", function(d) { data.set((d.Subzone), +d.Population); })
+    .defer(d3.csv, "population2021.csv", function(d) { data.set((d.Subzone).toUpperCase(), +d.Population); })
     .await(ready);
     
 
@@ -54,7 +54,19 @@
             d.total = data.get(d.properties.Name) || 0;
             return colorScale(d.total);
         })
-}
+        .on("mouseover", (event, d) => {
+    d3.select(".tooltip")
+    .text(d.properties.name)
+    .style("position", "absolute")
+    .style("background", "#fff")
+    .style("left", (event.pageX) + "px")
+    .style("top", (event.pageY) + "px");
+})
+.on("mouseout", (event, d) => {
+    d3.select(".tooltip")
+    .text("");
+})
+        }
 
 </script>
 
