@@ -28,28 +28,6 @@ var projection = d3.geoMercator()
 
 let geopath = d3.geoPath().projection(projection);
 
-svg.append("g")
-    .attr("id", "districts")
-    .selectAll("path")
-    .data(data[0].features)
-    .enter()
-    .append("path")
-    .attr("d", geopath)
-    .attr("fill", "black")
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 0.5)
-    .style("stroke", "transparent")
-      // set the color of each country
-      .attr("fill", function (d) {
-        d.total = data.get(d.id) || 0;
-        return colorScale(d.total);
-      })
-      .style("stroke", "transparent")
-      .attr("class", function(d){ return "Country" } )
-      .style("opacity", .8)
-      .on("mouseover", mouseOver )
-      .on("mouseleave", mouseLeave )
-
 let mouseOver = function(d) {
     d3.selectAll(".Country")
       .transition()
@@ -62,7 +40,6 @@ let mouseOver = function(d) {
       .style("stroke", "black")
   }
 
-
 let mouseLeave = function(d) {
     d3.selectAll(".Country")
       .transition()
@@ -74,6 +51,25 @@ let mouseLeave = function(d) {
       .style("stroke", "white")
   }
 
+svg.append("g")
+    .attr("id", "districts")
+    .selectAll("path")
+    .data(data[0].features)
+    .enter()
+    .append("path")
+    .attr("d", geopath)
+    .attr("fill", "black")
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 0.5)
+    .attr("fill", function (d) {
+        d.total = data.get(d.id) || 0;
+        return colorScale(d.total);
+      })
+    .style("stroke", "transparent")
+      .attr("class", function(d){ return "Country" } )
+      .style("opacity", .8)
+      .on("mouseover", mouseOver )
+      .on("mouseleave", mouseLeave )
 })
 
 </script>
