@@ -49,7 +49,6 @@ svg.append("g")
       .style("opacity", .8)
       .on("mouseover", mouseOver )
       .on("mouseleave", mouseLeave )
-})
 
 let mouseOver = function(d) {
     d3.selectAll(".Country")
@@ -74,6 +73,8 @@ let mouseLeave = function(d) {
       .duration(200)
       .style("stroke", "white")
   }
+
+})
 
 </script>
 
