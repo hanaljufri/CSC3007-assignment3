@@ -27,7 +27,7 @@
     // Load external data and boot
     d3.queue()
     .defer(d3.json, "sgmap.json")
-    .defer(d3.csv, "population2021.csv", function(d) { data.set((d.Planning_Area).toUpperCase(), +d.Population); })
+    .defer(d3.csv, "population2021.csv", function(d) { data.set((d.Subzone).toUpperCase(), +d.Population); })
     .await(ready);
     
 
@@ -51,7 +51,7 @@
         )
         // set the color of each country
         .attr("fill", function (d) {
-            d.total = data.get(d.properties.Field_1) || 0;
+            d.total = data.get(d.properties.Name) || 0;
             return colorScale(d.total);
         })
         }
