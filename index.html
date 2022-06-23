@@ -23,7 +23,7 @@
     // Data and color scale
     var data = d3.map();
     var colorScale = d3.scaleThreshold()
-    .domain([0, 100, 1000, 3500, 5000, 10000, 500000, 100000])
+    .domain([100, 1000, 3500, 5000, 8000, 10000, 500000, 100000])
     .range(d3.schemeGnBu[8]);
 
     // Load external data and boot
@@ -46,10 +46,12 @@
       .transition()
       .duration(200)
       .style("opacity", .5)
+      .style("stroke", "transparent")
     d3.select(this)
       .transition()
       .duration(200)
       .style("opacity", 1)
+      .style("stroke", "black")
     
   }
 
@@ -131,7 +133,7 @@
 			return d[0]+" - " + d[1];
 		});
 
-	legend.append("text").attr("x", 15).attr("y", 280).text("Population (Million)");
+	legend.append("text").attr("x", 15).attr("y", 280).text("Population");
 }
 
 </script>
