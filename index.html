@@ -54,6 +54,20 @@
             d.total = data.get(d.properties.Name) || 0;
             return colorScale(d.total);
         })
+        .on("mouseover", (event, d) => {
+        d3.select(".tooltip")
+    .text(d.properties.name)
+    .style("position", "absolute")
+    .style("background", "#fff")
+    .style("left", (event.pageX) + "px")
+    .style("top", (event.pageY) + "px");
+})
+.on("mouseout", (event, d) => {
+    d3.select(".tooltip")
+    .text("");
+})
+
+
         }
 
 </script>
