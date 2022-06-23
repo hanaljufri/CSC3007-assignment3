@@ -50,6 +50,7 @@
       .transition()
       .duration(200)
       .style("opacity", 1)
+      .style("stroke", "black")
   }
 
   let mouseLeave = function(d) {
@@ -62,6 +63,8 @@
       .transition()
       .duration(200)
       .style("stroke", "transparent")
+    d3.select(".tooltip")
+    .text("test");
   }
     
     // Draw the map
@@ -83,7 +86,7 @@
       .attr("class", function(d){ return "Country" } )
       .style("opacity", .8)
       .on("mouseover", mouseOver )
-      .on("mouseleave", mouseLeave )
+      .on("mouseout", mouseLeave )
     }
 
 </script>
